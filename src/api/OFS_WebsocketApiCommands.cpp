@@ -1,5 +1,6 @@
 #include "OFS_WebsocketApiCommands.h"
 #include <optional>
+#include <iostream>
 
 WsCommandBuffer::WsCommandBuffer() noexcept
 {
@@ -8,20 +9,26 @@ WsCommandBuffer::WsCommandBuffer() noexcept
 
 inline static std::unique_ptr<WsCmd> CreateCommand(const std::string& name, const nlohmann::json& data) noexcept
 {
-    if(name == "change_time" && data["time"].is_number())
+    if(name == "change_time" &&  data.contains("time") && data["time"].is_number())
     {
         float time = data["time"].get<float>();
         return std::make_unique<WsTimeChangeCmd>(time);
     }
-    else if(name == "change_play" && data["playing"].is_boolean())
+    else if(name == "change_play" && data.contains("playing") && data["playing"].is_boolean())
     {
         bool playing = data["playing"].get<bool>();
         return std::make_unique<WsPlayChangeCmd>(playing);
     }
-    else if(name == "change_playbackspeed" && data["speed"].is_number())
+    else if(name == "change_playbackspeed" && data.contains("speed") && data["speed"].is_number())
     {
         float speed = data["speed"].get<float>();
         return std::make_unique<WsPlaybackSpeedChangeCmd>(speed);
+    }
+    else if(name == "add_action" && data.contains("at") && data.contains("pos"))
+    {
+        auto at = data["at"].get<float>();
+        auto pos = data["pos"].get<int32_t>();
+        return std::make_unique<WsAddActionCmd>(at, pos);
     }
     return {};
 }
@@ -79,4 +86,13 @@ void WsTimeChangeCmd::Run() noexcept
 {
     auto app = OpenFunscripter::ptr;
     app->player->SetPositionExact(time);
+}
+
+void WsAddActionCmd::Run() noexcept
+{
+    auto app = OpenFunscripter::ptr;
+    /* auto funscripts = app->LoadedFunscripts(); */
+    auto activeFunscript = app->ActiveFunscript();
+
+    activeFunscript->AddEditAction({at, pos}, app->scripting->LogicalFrameTime());
 }

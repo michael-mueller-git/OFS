@@ -33,6 +33,17 @@ class WsPlaybackSpeedChangeCmd : public WsCmd
     void Run() noexcept override;
 };
 
+class WsAddActionCmd : public WsCmd
+{
+    public:
+    float at = 0.f;
+    int32_t pos = 0;
+    WsAddActionCmd(float at, int32_t pos) noexcept
+        : at(at), pos(pos) {}
+
+    void Run() noexcept override;
+};
+
 class WsTimeChangeCmd : public WsCmd
 {
     public:

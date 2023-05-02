@@ -15,7 +15,7 @@
 struct EventSerializationContext
 {
     SDL_cond* processCond = nullptr;
-    
+
     std::atomic<bool> shouldExit = false;
     std::atomic<bool> hasExited = false;
 
@@ -52,8 +52,8 @@ struct EventSerializationContext
     {
         shouldExit = true;
         StartProcessing();
-        while(!hasExited) { 
-            SDL_Delay(1); 
+        while(!hasExited) {
+            SDL_Delay(1);
         }
         SDL_DestroyCond(processCond);
     }
@@ -76,6 +76,8 @@ class OFS_WebsocketApi
 
     bool StartServer() noexcept;
     void StopServer() noexcept;
+
+    bool IsServerRunning() noexcept;
 
     void Update() noexcept;
     void ShowWindow(bool* open) noexcept;

@@ -362,6 +362,11 @@ void OFS_WebsocketApi::StopServer() noexcept
 	}
 }
 
+bool OFS_WebsocketApi::IsServerRunning() noexcept
+{
+	return CTX->web != nullptr;
+}
+
 void OFS_WebsocketApi::Update() noexcept
 {
 	if(ClientsConnected() <= 0) return;

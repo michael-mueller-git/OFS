@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 #include <variant>
 #include <memory>
@@ -38,8 +39,9 @@ class WsAddActionCmd : public WsCmd
     public:
     float at = 0.f;
     int32_t pos = 0;
-    WsAddActionCmd(float at, int32_t pos) noexcept
-        : at(at), pos(pos) {}
+    int32_t scriptIndex = 0;
+    WsAddActionCmd(float at, int32_t pos, int32_t scriptIndex) noexcept
+        : at(at), pos(pos), scriptIndex(scriptIndex) {}
 
     void Run() noexcept override;
 };

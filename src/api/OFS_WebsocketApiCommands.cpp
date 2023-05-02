@@ -28,7 +28,8 @@ inline static std::unique_ptr<WsCmd> CreateCommand(const std::string& name, cons
     {
         auto at = data["at"].get<float>();
         auto pos = data["pos"].get<int32_t>();
-        return std::make_unique<WsAddActionCmd>(at, pos);
+        auto scriptIndex = data.contains("scriptIndex") ? data["scriptIndex"].get<int32_t>() : -1;
+        return std::make_unique<WsAddActionCmd>(at, pos, scriptIndex);
     }
     return {};
 }
@@ -91,8 +92,11 @@ void WsTimeChangeCmd::Run() noexcept
 void WsAddActionCmd::Run() noexcept
 {
     auto app = OpenFunscripter::ptr;
-    /* auto funscripts = app->LoadedFunscripts(); */
+    auto funscripts = app->LoadedFunscripts();
     auto activeFunscript = app->ActiveFunscript();
-
-    activeFunscript->AddEditAction({at, pos}, app->scripting->LogicalFrameTime());
+    if (scriptIndex < 0) {
+        activeFunscript->AddEditAction({at, pos}, app->scripting->LogicalFrameTime());
+    } else if (scriptIndex < funscripts.size()) {
+        funscripts[scriptIndex]->AddEditAction({at, pos}, app->scripting->LogicalFrameTime());
+    }
 }

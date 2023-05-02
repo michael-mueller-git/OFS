@@ -362,6 +362,15 @@ void OFS_WebsocketApi::StopServer() noexcept
 	}
 }
 
+bool OFS_WebsocketApi::PushUserData01Event(nlohmann::json &content) noexcept {
+	if (eventSerializationCtx) {
+		eventSerializationCtx->Push<WsUserData01>(content);
+		return true;
+	}
+
+	return false;
+}
+
 bool OFS_WebsocketApi::IsServerRunning() noexcept
 {
 	return CTX->web != nullptr;

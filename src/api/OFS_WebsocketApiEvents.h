@@ -20,6 +20,18 @@ void to_json(nlohmann::json& j, const class WsMediaChange& p);
 void to_json(nlohmann::json& j, const class WsPlaybackSpeedChange& p);
 void to_json(nlohmann::json& j, const class WsFunscriptChange& p);
 void to_json(nlohmann::json& j, const class WsFunscriptRemove& p);
+void to_json(nlohmann::json& j, const class WsUserData01& p);
+
+class WsUserData01 : public OFS_Event<WsUserData01>, public ToJsonInterface
+{
+    public:
+    nlohmann::json content;
+
+    WsUserData01(const nlohmann::json& content) noexcept
+        : content(content) {}
+
+    void Serialize(nlohmann::json& json) noexcept override { to_json(json, *this); }
+};
 
 class WsMediaChange : public OFS_Event<WsMediaChange>, public ToJsonInterface
 {

@@ -10,7 +10,7 @@ OFS_PlayerAPI::~OFS_PlayerAPI() noexcept
 OFS_PlayerAPI::OFS_PlayerAPI(sol::state_view& L) noexcept
 {
     auto player = L.new_usertype<OFS_PlayerAPI>(OFS_ExtensionAPI::PlayerNamespace);
-    player.set_function("Play", 
+    player.set_function("Play",
         sol::overload(
             OFS_PlayerAPI::Play,
             OFS_PlayerAPI::TogglePlay
@@ -21,6 +21,8 @@ OFS_PlayerAPI::OFS_PlayerAPI(sol::state_view& L) noexcept
     player["Duration"] = OFS_PlayerAPI::Duration;
     player["IsPlaying"] = OFS_PlayerAPI::IsPlaying;
     player["IsWebsocketActive"] = OFS_PlayerAPI::IsWebsocketActive;
+    player["WebsocketClients"] = OFS_PlayerAPI::WebsocketClients;
+    player["WebsocketSend"] = OFS_PlayerAPI::WebsocketSend;
     player["CurrentVideo"] = OFS_PlayerAPI::CurrentVideo;
     player["FPS"] = OFS_PlayerAPI::FPS;
     player["Width"] = OFS_PlayerAPI::VideoWidth;
@@ -32,7 +34,7 @@ OFS_PlayerAPI::OFS_PlayerAPI(sol::state_view& L) noexcept
 void OFS_PlayerAPI::TogglePlay() noexcept
 {
     auto app = OpenFunscripter::ptr;
-    app->player->TogglePlay();    
+    app->player->TogglePlay();
 }
 
 void OFS_PlayerAPI::Play(bool shouldPlay) noexcept
@@ -65,10 +67,31 @@ bool OFS_PlayerAPI::IsPlaying() noexcept
     return !app->player->IsPaused();
 }
 
+lua_Number OFS_PlayerAPI::WebsocketClients() noexcept
+{
+    auto app = OpenFunscripter::ptr;
+    return app->webApi->ClientsConnected();
+}
+
+bool OFS_PlayerAPI::WebsocketSend(std::string content) noexcept
+{
+    auto app = OpenFunscripter::ptr;
+    nlohmann::json j1 = nlohmann::json::parse(content, nullptr, false, true);
+    if(!j1.is_discarded()) {
+        return app->webApi->PushUserData01Event(j1);
+    }
+
+    nlohmann::json j2 = {
+        {"str", content}
+    };
+
+    return app->webApi->PushUserData01Event(j2);
+}
+
 bool OFS_PlayerAPI::IsWebsocketActive() noexcept
 {
     auto app = OpenFunscripter::ptr;
-    return !app->webApi->IsServerRunning();
+    return app->webApi->IsServerRunning();
 }
 
 std::string OFS_PlayerAPI::CurrentVideo() noexcept

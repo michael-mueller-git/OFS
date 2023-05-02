@@ -19,4 +19,8 @@ async def ofs_websocket_test():
 
         await asyncio.sleep(1)
 
+        for _ in range(1000):
+            msg = await websocket.recv()
+            print(msg)
+
 asyncio.get_event_loop().run_until_complete(ofs_websocket_test())

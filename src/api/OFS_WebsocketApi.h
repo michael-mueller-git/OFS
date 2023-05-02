@@ -10,6 +10,8 @@
 #include "SDL_atomic.h"
 #include "SDL_timer.h"
 
+#include "nlohmann/json.hpp"
+
 #include "OFS_Event.h"
 
 struct EventSerializationContext
@@ -78,6 +80,7 @@ class OFS_WebsocketApi
     void StopServer() noexcept;
 
     bool IsServerRunning() noexcept;
+    bool PushUserData01Event(nlohmann::json &content) noexcept;
 
     void Update() noexcept;
     void ShowWindow(bool* open) noexcept;

@@ -82,7 +82,7 @@ bool OFS_PlayerAPI::WebsocketSend(std::string content) noexcept
     }
 
     nlohmann::json j2 = {
-        {"str", content}
+        {"message", content}
     };
 
     return app->webApi->PushUserData01Event(j2);

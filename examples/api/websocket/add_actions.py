@@ -22,5 +22,14 @@ async def ofs_websocket_test():
         for _ in range(1000):
             msg = await websocket.recv()
             print(msg)
+            await websocket.send(json.dumps({
+                "type": "command",
+                "name": "user_data_01",
+                "data": {
+                    "source": "test",
+                    "message": "Hello World"
+                }
+            }))
+
 
 asyncio.get_event_loop().run_until_complete(ofs_websocket_test())

@@ -15,7 +15,7 @@ class OFS_PlayerAPI
     static lua_Number FPS() noexcept;
     static bool IsWebsocketActive() noexcept;
     static lua_Number WebsocketClients() noexcept;
-    static bool WebsocketSend(std::string content) noexcept;
+    static bool WebsocketSend(std::string source, std::string content) noexcept;
 
     static void setPlaybackSpeed(lua_Number speed) noexcept;
     static lua_Number getPlaybackSpeed() noexcept;

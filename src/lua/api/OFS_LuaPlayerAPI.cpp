@@ -76,18 +76,18 @@ lua_Number OFS_PlayerAPI::WebsocketClients() noexcept
 bool OFS_PlayerAPI::WebsocketSend(std::string source, std::string content) noexcept
 {
     auto app = OpenFunscripter::ptr;
-    nlohmann::json j2 = {
-        {"source", source, "message", content}
+    nlohmann::json msg = {
+        {"source", source}
     };
 
-    nlohmann::json j1 = nlohmann::json::parse(content, nullptr, false, true);
-    if(!j1.is_discarded()) {
-        j2["message"] = j1;
+    nlohmann::json j = nlohmann::json::parse(content, nullptr, false, true);
+    if(!j.is_discarded()) {
+        msg["message"] = j;
     } else {
-        j2["message"] = content;
+        msg["message"] = content;
     }
 
-    return app->webApi->PushUserData01Event(j2);
+    return app->webApi->PushUserData01Event(msg);
 }
 
 bool OFS_PlayerAPI::IsWebsocketActive() noexcept

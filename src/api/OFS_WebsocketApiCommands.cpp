@@ -31,6 +31,11 @@ inline static std::unique_ptr<WsCmd> CreateCommand(const std::string& name, cons
         auto scriptIndex = data.contains("scriptIndex") ? data["scriptIndex"].get<int32_t>() : -1;
         return std::make_unique<WsAddActionCmd>(at, pos, scriptIndex);
     }
+    else if(name == "user_data_01" && data.contains("message") && data.contains("source")) {
+        auto source = data["source"].get<std::string>();
+        auto message = data["message"].get<std::string>();
+        return std::make_unique<WsUserData01Cmd>(source, message);
+    }
     return {};
 }
 
@@ -99,4 +104,10 @@ void WsAddActionCmd::Run() noexcept
     } else if (scriptIndex < funscripts.size()) {
         funscripts[scriptIndex]->AddEditAction({at, pos}, app->scripting->LogicalFrameTime());
     }
+}
+
+void WsUserData01Cmd::Run() noexcept
+{
+    auto app = OpenFunscripter::ptr;
+    app->extensions->WsReceive(source, message);
 }

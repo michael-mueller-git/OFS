@@ -42,6 +42,7 @@ class OFS_LuaExtensions
         // functions
         static constexpr const char* InitFunction = "init";
         static constexpr const char* UpdateFunction = "update";
+        static constexpr const char* WsReceiveFunction = "ws_receive";
         static constexpr const char* RenderGui = "gui";
 
         OFS_LuaExtensions() noexcept;
@@ -54,7 +55,8 @@ class OFS_LuaExtensions
         void ShowExtensions() noexcept;
         void ReloadEnabledExtensions() noexcept;
         void ScriptChanged(uint32_t scriptIdx) noexcept;
-        
+        void WsReceive(std::string& source, std::string& message) noexcept;
+
         void AddBinding(const std::string& extId, const std::string& uniqueId, const std::string& name) noexcept;
 };
 

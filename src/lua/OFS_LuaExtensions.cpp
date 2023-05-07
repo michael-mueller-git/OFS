@@ -110,6 +110,13 @@ void OFS_LuaExtensions::Update(float delta) noexcept
 	}
 }
 
+void OFS_LuaExtensions::WsReceive(std::string& source, std::string& message) noexcept
+{
+	for(auto& ext : Extensions) {
+		ext.WsReceive(source, message);
+	}
+}
+
 void OFS_LuaExtensions::ShowExtensions() noexcept
 {
     OFS_PROFILE(__FUNCTION__);

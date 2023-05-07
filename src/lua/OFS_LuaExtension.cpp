@@ -62,6 +62,18 @@ void OFS_LuaExtension::Update() noexcept
 	}
 }
 
+void OFS_LuaExtension::WsReceive(std::string& source, std::string& message) noexcept
+{
+	if(!Active) return;
+	auto wsReceive = L.get<sol::protected_function>(OFS_LuaExtensions::WsReceiveFunction);
+	auto res = wsReceive(source, message);
+	if(res.status() != sol::call_status::ok)
+	{
+		auto err = sol::stack::get_traceback_or_errors(L.lua_state());
+		AddError(err.what());
+	}
+}
+
 bool OFS_LuaExtension::Load() noexcept
 {
     auto directory = Util::PathFromString(this->Directory);

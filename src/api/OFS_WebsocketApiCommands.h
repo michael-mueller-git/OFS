@@ -4,6 +4,7 @@
 #include <vector>
 #include <variant>
 #include <memory>
+#include <queue>
 
 #include "SDL_atomic.h"
 #include "OFS_Util.h"
@@ -42,6 +43,17 @@ class WsAddActionCmd : public WsCmd
     int32_t scriptIndex = 0;
     WsAddActionCmd(float at, int32_t pos, int32_t scriptIndex) noexcept
         : at(at), pos(pos), scriptIndex(scriptIndex) {}
+
+    void Run() noexcept override;
+};
+
+class WsUserData01Cmd : public WsCmd
+{
+    public:
+    std::string source = "";
+    std::string message = "";
+    WsUserData01Cmd (std::string& source, std::string& message) noexcept
+        : source(source), message(message) {}
 
     void Run() noexcept override;
 };

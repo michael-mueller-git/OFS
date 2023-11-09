@@ -266,7 +266,7 @@ static int32_t ConvertModsToOfs(int32_t mods) noexcept
     if(mods & ImGuiMod_Super)
         ofsMods |= OFS_KeyMod_Super;
 
-    static_assert(OFS_KeyMod_Mask_ == ImGuiMod_Mask_);
+    static_assert((int)OFS_KeyMod_Mask_ == (int)ImGuiMod_Mask_);
     ofsMods |= (mods & ~ImGuiMod_Mask_);
     
     return ofsMods;
@@ -284,7 +284,7 @@ static int32_t ConvertModsToImGui(int32_t mods) noexcept
     if(mods & OFS_KeyMod_Super)
         imMods |= ImGuiMod_Super;
     
-    static_assert(OFS_KeyMod_Mask_ == ImGuiMod_Mask_);
+    static_assert((int)OFS_KeyMod_Mask_ == (int)ImGuiMod_Mask_);
     imMods |= (mods & ~OFS_KeyMod_Mask_);
 
     return imMods;

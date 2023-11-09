@@ -98,19 +98,19 @@ inline static void LogToConsole(OFS_LogLevel level, const char* msg) noexcept
     OFS_PROFILE(__FUNCTION__);
     switch (level) {
         case OFS_LogLevel::OFS_LOG_INFO:
-            SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, msg);
+            SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "%s\n", msg);
             OFS_MainLog.AddLog("[INFO]: %s\n", msg);
             break;
         case OFS_LogLevel::OFS_LOG_WARN:
-            SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, msg);
+            SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%s\n", msg);
             OFS_MainLog.AddLog("[WARN]: %s\n", msg);
             break;
         case OFS_LogLevel::OFS_LOG_DEBUG:
-            SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, msg);
+            SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "%s\n", msg);
             OFS_MainLog.AddLog("[DEBUG]: %s\n", msg);
             break;
         case OFS_LogLevel::OFS_LOG_ERROR:
-            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, msg);
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%s\n", msg);
             OFS_MainLog.AddLog("[ERROR]: %s\n", msg);
             break;
     }

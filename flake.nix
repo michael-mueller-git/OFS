@@ -33,8 +33,7 @@
       formatter.${system} = pkgs.nixpkgs-fmt;
       devShells.x86_64-linux.default = pkgs.mkShell {
         shellHook = ''
-          echo " >> Welcome to Nix developer shell"
-          export LD_LIBRARY_PATH="${pkgs.xorg.libX11}/lib:${pkgs.xorg.libXext}/lib:${pkgs.xorg.libXinerama}/lib:${pkgs.xorg.libXi}/lib:${pkgs.xorg.libXrandr}/lib:${pkgs.mpv}/lib:${pkgs.libGLU}/lib:${pkgs.libglvnd}/lib"        
+          export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${pkgs.xorg.libX11}/lib:${pkgs.xorg.libXext}/lib:${pkgs.xorg.libXinerama}/lib:${pkgs.xorg.libXi}/lib:${pkgs.xorg.libXrandr}/lib:${pkgs.mpv}/lib:${pkgs.libGLU}/lib:${pkgs.libglvnd}/lib:${pkgs.xorg.libXfixes}/lib:${pkgs.xorg.libXxf86vm}/lib"        
           export SDL_VIDEODRIVER="x11"
           '';
         nativeBuildInputs = with pkgs; [
@@ -44,6 +43,13 @@
           libglvnd
           pkg-config
           mpv
+          xorg.libX11
+          xorg.libXext
+          xorg.libXinerama
+          xorg.libXi
+          xorg.libXrandr
+          xorg.libXfixes
+          xorg.libXxf86vm
         ];
       };
     };

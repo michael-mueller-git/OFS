@@ -34,7 +34,9 @@
       devShells.x86_64-linux.default = pkgs.mkShell {
         shellHook = ''
           echo " >> Welcome to Nix developer shell"
-        '';
+          export LD_LIBRARY_PATH="${pkgs.xorg.libX11}/lib:${pkgs.xorg.libXext}/lib:${pkgs.xorg.libXinerama}/lib:${pkgs.xorg.libXi}/lib:${pkgs.xorg.libXrandr}/lib:${pkgs.mpv}/lib:${pkgs.libGLU}/lib:${pkgs.libglvnd}/lib"        
+          export SDL_VIDEODRIVER="x11"
+          '';
         nativeBuildInputs = with pkgs; [
           cmake
           mesa

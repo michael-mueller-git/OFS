@@ -81,7 +81,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 	eventpp
 )
 
-option(USE_NIX_LIB "Use nix libraries instead of static linked git submodule libraries (this fix 'ERROR: wayland not availabl' on NixOS)" OFF)
+option(USE_NIX_LIB "Use nix libraries instead of static linked git submodule libraries (this fix 'ERROR: wayland not available' on NixOS)" OFF)
 
 if(USE_NIX_LIB)
 	find_package(SDL2 REQUIRED)

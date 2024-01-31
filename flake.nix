@@ -51,6 +51,7 @@
         ];
         postInstall = ''
           wrapProgram "$out/bin/OpenFunscripter" --prefix LD_LIBRARY_PATH : "${libPath}" --prefix PATH : "${binPath}"
+          cp -rfv "$src/data" "$out/bin/"
         '';
       };
       defaultPackage.x86_64-linux = self.packages.x86_64-linux.ofs;

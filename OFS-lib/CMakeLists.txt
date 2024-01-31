@@ -70,8 +70,6 @@ add_custom_command(OUTPUT "OFS_StringsGenerated.cpp" "OFS_StringsGenerated.h"
                    VERBATIM)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
-	SDL2-static
-	SDL2main
 	nlohmann_json
 	glad2
 	imgui
@@ -82,6 +80,20 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 	refl-cpp
 	eventpp
 )
+
+option(USE_NIX_LIB "Use nix libraries instead of static linked git submodule libraries (this fix 'ERROR: wayland not availabl' on NixOS)" OFF)
+
+if(USE_NIX_LIB)
+	find_package(SDL2 REQUIRED)
+	target_include_directories(${PROJECT_NAME} PUBLIC ${SDL2_INCLUDE_DIRS})
+	target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::SDL2)
+else()
+	target_link_libraries(${PROJECT_NAME} PUBLIC
+		SDL2-static
+		SDL2main
+	)
+endif(USE_NIX_LIB)
+
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 

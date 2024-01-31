@@ -19,7 +19,7 @@
           rev = "a95b3a68be691ca6d2dae1f7ae51988227fafe87";
           sha256 = "sha256-B8efNEukT/cakNmNMCO5PDP+A0GmNvxCPWOSRwGFgXE=";
         };
-        cmakeFlags = [ "-Wno-dev" "--compile-no-warning-as-error" "-DCFLAGS=-Wno-error" "-DCXXFLAGS=-Wno-error" ];
+        cmakeFlags = [ "-Wno-dev" "--compile-no-warning-as-error" "-DCFLAGS=-Wno-error" "-DCXXFLAGS=-Wno-error -DUSE_NIX_LIB=ON" ];
         nativeBuildInputs = with pkgs; [
           cmake
           mesa
@@ -27,6 +27,19 @@
           libglvnd
           pkg-config
           mpv
+          xorg.libX11
+          xorg.libXext
+          xorg.libXinerama
+          xorg.libXi
+          xorg.libXrandr
+          xorg.libXfixes
+          xorg.libXxf86vm
+          wayland    
+          waylandpp
+          wayland-protocols
+          wayland-scanner
+          libGL
+          SDL2
         ];
       };
       defaultPackage.x86_64-linux = self.packages.x86_64-linux.ofs;
@@ -50,6 +63,12 @@
           xorg.libXrandr
           xorg.libXfixes
           xorg.libXxf86vm
+          wayland
+          waylandpp
+          wayland-protocols
+          wayland-scanner
+          libGL
+          SDL2
         ];
       };
     };

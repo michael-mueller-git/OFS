@@ -27,6 +27,8 @@
         wayland-scanner
         libGL
         SDL2
+        gnome.zenity
+        which
       ];
       libPath = pkgs.lib.makeLibraryPath ofsDependencies;
     in

@@ -441,9 +441,8 @@ OFS_ExtensionAPI::OFS_ExtensionAPI(sol::usertype<class OFS_ExtensionAPI>& ofs) n
 	// register json lua module
 	lua_getglobal(L, "package");
   lua_getfield(L, -1, "preload");
-	int statusJson = luaL_loadstring(L, LuaJsonModule);
+	luaL_loadstring(L, LuaJsonModule);
 	lua_setfield(L, -2, "json");
-	FUN_ASSERT(statusJson == 0, "lua json failed");
 }
 
 OFS_ExtensionAPI::~OFS_ExtensionAPI() noexcept

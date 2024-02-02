@@ -5,6 +5,7 @@
 #include <iostream>
 #include <functional>
 #include <filesystem>
+#include <cstdlib>
 
 namespace fs = std::filesystem;
 
@@ -212,7 +213,9 @@ void CopyRecursive(const fs::path& source, const fs::path& destination) {
             fs::create_directories(newDestination);
             CopyRecursive(entry, newDestination);
         } else if (fs::is_regular_file(entry.status())) {
-            fs::copy_file(entry, newDestination, fs::copy_options::overwrite_existing);
+            //fs::copy_file(entry, newDestination, fs::copy_options::overwrite_existing);
+            std::string cmd = std::string("cp -fv \"") + entry.path().string() + "\" \"" + newDestination.string() + "\"";
+            system(cmd.c_str());
         }
     }
 }
@@ -246,7 +249,11 @@ void OFS_CoreExtension::setup() noexcept
     srcPath = srcPath / "extensions";
     std::cout << "check: " << srcPath << std::endl;
     if (std::filesystem::exists(srcPath)) {
-        CopyRecursive(srcPath, Util::PathFromString(Util::Prefpath(OFS_LuaExtensions::ExtensionDir)));
+        try {
+            CopyRecursive(srcPath, Util::PathFromString(Util::Prefpath(OFS_LuaExtensions::ExtensionDir)));
+        } catch (std::exception& e) {
+            std::cout << e.what();
+        }
     }
 #endif
     

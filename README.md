@@ -5,5 +5,5 @@ Fork of [OpenFunscripter](https://github.com/OpenFunscripter/OFS) with some addi
 ## Nix
 
 ```sh
-nix run github:michael-mueller-git/OFS
+nix run github:michael-mueller-git/OFS --refresh
 ```

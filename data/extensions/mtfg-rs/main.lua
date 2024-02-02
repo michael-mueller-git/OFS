@@ -78,7 +78,7 @@ function binding.start_funscript_generator()
     file = io.open("/tmp/nix-mtfg-rs.sh", "w")
     file:write("#!/usr/bin/env bash\n")
     file:write("unset LD_LIBRARY_PATH\n")
-    file:write("nix run github:michael-mueller-git/mtfg-rs -- \"$@\"\n")
+    file:write("nix run github:michael-mueller-git/mtfg-rs --refresh -- \"$@\"\n")
     file:close()
     
     os.execute("chmod +x /tmp/nix-mtfg-rs.sh")

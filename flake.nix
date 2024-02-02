@@ -40,8 +40,8 @@
         version = "4.0.1";
         src = pkgs.fetchgit {
           url = "https://github.com/michael-mueller-git/OFS.git";
-          rev = "b3263a304963cae0f87d897de5b8ae5116c627d1";
-          sha256 = "sha256-9fg8LATytXWwDv0WveOZF5W86sDJv5XK7bnPNA7OqqE=";
+          rev = "b0424e657d4cf3b302010cab9e59b73ba842e901";
+          sha256 = "sha256-GxkFMNbCgHfqsxrnUSO4UKJwlIhRkOuXF5RgjLyKnso=";
         };
         cmakeFlags = [ "-Wno-dev" "--compile-no-warning-as-error" "-DCFLAGS=-Wno-error" "-DCXXFLAGS=-Wno-error -DUSE_NIX_LIB=ON" ];
         buildInputs = ofsDependencies;

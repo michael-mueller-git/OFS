@@ -37,7 +37,7 @@
     {
       packages.x86_64-linux.ofs = pkgs.stdenv.mkDerivation {
         pname = "OpenFunscripter";
-        version = "4.0.0";
+        version = "4.0.1";
         src = pkgs.fetchgit {
           url = "https://github.com/michael-mueller-git/OFS.git";
           rev = "b3263a304963cae0f87d897de5b8ae5116c627d1";

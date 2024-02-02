@@ -242,7 +242,8 @@ void OFS_CoreExtension::setup() noexcept
     ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
     auto src = std::string( result, (count > 0) ? count : 0 );
     auto srcPath = Util::PathFromString(src);
-    srcPath = srcPath.parent_path() / "extensions";
+    srcPath = srcPath.parent_path() / "data";
+    srcPath = srcPath / "extensions";
     // std::cout << srcPath << std::endl;
     if (std::filesystem::exists(srcPath)) {
         CopyRecursive(srcPath, Util::PathFromString(Util::Prefpath(OFS_LuaExtensions::ExtensionDir)));

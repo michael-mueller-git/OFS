@@ -29,6 +29,7 @@
         SDL2
         gnome.zenity
         which
+        git
       ];
       libPath = pkgs.lib.makeLibraryPath ofsDependencies;
       binPath = pkgs.lib.makeBinPath ofsDependencies;

@@ -213,9 +213,9 @@ void CopyRecursive(const fs::path& source, const fs::path& destination) {
             fs::create_directories(newDestination);
             CopyRecursive(entry, newDestination);
         } else if (fs::is_regular_file(entry.status())) {
-            //fs::copy_file(entry, newDestination, fs::copy_options::overwrite_existing);
-            std::string cmd = std::string("cp -fv \"") + entry.path().string() + "\" \"" + newDestination.string() + "\"";
-            system(cmd.c_str());
+            fs::copy_file(entry, newDestination, fs::copy_options::overwrite_existing);
+            //std::string cmd = std::string("cp -fv \"") + entry.path().string() + "\" \"" + newDestination.string() + "\"";
+            //system(cmd.c_str());
         }
     }
 }
@@ -250,7 +250,13 @@ void OFS_CoreExtension::setup() noexcept
     std::cout << "check: " << srcPath << std::endl;
     if (std::filesystem::exists(srcPath)) {
         try {
-            CopyRecursive(srcPath, Util::PathFromString(Util::Prefpath(OFS_LuaExtensions::ExtensionDir)));
+           // CopyRecursive(srcPath, Util::PathFromString(Util::Prefpath(OFS_LuaExtensions::ExtensionDir)));
+            auto dest = Util::PathFromString(Util::Prefpath(OFS_LuaExtensions::ExtensionDir));
+            std::string cmd = std::string("cp -rfv \"") + srcPath.string() + "/.\" \"" + dest.string() + "\"";
+            (void)system(cmd.c_str());
+            std::string cmd2 = std::string("chmod 775 -R \"") + dest.string() + "\"";
+            (void)system(cmd2.c_str());
+
         } catch (std::exception& e) {
             std::cout << e.what();
         }

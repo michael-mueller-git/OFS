@@ -244,7 +244,7 @@ void OFS_CoreExtension::setup() noexcept
     auto srcPath = Util::PathFromString(src);
     srcPath = srcPath.parent_path() / "data";
     srcPath = srcPath / "extensions";
-    // std::cout << srcPath << std::endl;
+    std::cout << "check: " << srcPath << std::endl;
     if (std::filesystem::exists(srcPath)) {
         CopyRecursive(srcPath, Util::PathFromString(Util::Prefpath(OFS_LuaExtensions::ExtensionDir)));
     }

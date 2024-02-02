@@ -205,15 +205,15 @@ function binding.jitter()
 end
 )";
 
-void CopyRecursive(const fs::path& src, const fs::path& target) noexcept
-{
-    try
-    {
-        fs::copy(src, target, fs::copy_options::overwrite_existing | fs::copy_options::recursive);
-    }
-    catch (std::exception& e)
-    {
-        std::cout << e.what();
+void CopyRecursive(const fs::path& source, const fs::path& destination) {
+    for (const auto& entry : fs::directory_iterator(source)) {
+        const auto newDestination = destination / entry.path().filename();
+        if (fs::is_directory(entry.status())) {
+            fs::create_directories(newDestination);
+            CopyRecursive(entry, newDestination);
+        } else if (fs::is_regular_file(entry.status())) {
+            fs::copy_file(entry, newDestination, fs::copy_options::overwrite_existing);
+        }
     }
 }
 

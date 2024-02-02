@@ -2,7 +2,11 @@
 #include "OFS_LuaExtensions.h"
 #include "OFS_Util.h"
 
+#include <iostream>
+#include <functional>
 #include <filesystem>
+
+namespace fs = std::filesystem;
 
 static constexpr const char* Source = R"(
 -- globals
@@ -201,6 +205,18 @@ function binding.jitter()
 end
 )";
 
+void CopyRecursive(const fs::path& src, const fs::path& target) noexcept
+{
+    try
+    {
+        fs::copy(src, target, fs::copy_options::overwrite_existing | fs::copy_options::recursive);
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what();
+    }
+}
+
 void OFS_CoreExtension::setup() noexcept
 {
     std::error_code ec;
@@ -220,4 +236,17 @@ void OFS_CoreExtension::setup() noexcept
             SDL_RWclose(handle);
         }
     }
+
+#if __unix__
+    char result[ PATH_MAX ];
+    ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
+    auto src = std::string( result, (count > 0) ? count : 0 );
+    auto srcPath = Util::PathFromString(src);
+    srcPath = srcPath.parent_path() / "extensions";
+    // std::cout << srcPath << std::endl;
+    if (std::filesystem::exists(srcPath)) {
+        CopyRecursive(srcPath, Util::PathFromString(Util::Prefpath(OFS_LuaExtensions::ExtensionDir)));
+    }
+#endif
+    
 }

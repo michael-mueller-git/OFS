@@ -35,7 +35,7 @@
       binPath = pkgs.lib.makeBinPath ofsDependencies;
     in
     {
-      packages.x86_64-linux.ofs = pkgs.stdenv.mkDerivation {
+      packages.${system}.ofs = pkgs.stdenv.mkDerivation {
         pname = "OpenFunscripter";
         version = "4.0.1";
         src = pkgs.fetchgit {
@@ -55,9 +55,9 @@
           cp -rfv "$src/data" "$out/bin/"
         '';
       };
-      defaultPackage.x86_64-linux = self.packages.x86_64-linux.ofs;
+      defaultPackage.${system} = self.packages.${system}.ofs;
       formatter.${system} = pkgs.nixpkgs-fmt;
-      devShells.x86_64-linux.default = pkgs.mkShell {
+      devShells.${system}.default = pkgs.mkShell {
         LD_LIBRARY_PATH = libPath;
         buildInputs = ofsDependencies;        
         nativeBuildInputs = with pkgs; [

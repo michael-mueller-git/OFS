@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <atomic>
+#include <optional>
 
 #include "SDL_thread.h"
 #include "SDL_atomic.h"
@@ -80,6 +81,7 @@ class OFS_WebsocketApi
     void StopServer() noexcept;
 
     bool IsServerRunning() noexcept;
+    std::optional<uint16_t> GetPort() noexcept;
     bool PushUserData01Event(nlohmann::json &content) noexcept;
 
     void Update() noexcept;

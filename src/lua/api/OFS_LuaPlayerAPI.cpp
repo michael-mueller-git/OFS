@@ -21,6 +21,7 @@ OFS_PlayerAPI::OFS_PlayerAPI(sol::state_view& L) noexcept
     player["Duration"] = OFS_PlayerAPI::Duration;
     player["IsPlaying"] = OFS_PlayerAPI::IsPlaying;
     player["IsWebsocketActive"] = OFS_PlayerAPI::IsWebsocketActive;
+    player["GetWebsocketPort"] = OFS_PlayerAPI::GetWebsocketPort;
     player["WebsocketClients"] = OFS_PlayerAPI::WebsocketClients;
     player["WebsocketSend"] = OFS_PlayerAPI::WebsocketSend;
     player["CurrentVideo"] = OFS_PlayerAPI::CurrentVideo;
@@ -95,6 +96,13 @@ bool OFS_PlayerAPI::IsWebsocketActive() noexcept
     auto app = OpenFunscripter::ptr;
     return app->webApi->IsServerRunning();
 }
+
+std::optional<uint16_t> OFS_PlayerAPI::GetWebsocketPort() noexcept
+{
+    auto app = OpenFunscripter::ptr;
+    return app->webApi->GetPort();
+}
+
 
 std::string OFS_PlayerAPI::CurrentVideo() noexcept
 {

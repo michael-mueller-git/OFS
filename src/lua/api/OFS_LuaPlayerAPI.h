@@ -14,6 +14,7 @@ class OFS_PlayerAPI
     static std::string CurrentVideo() noexcept;
     static lua_Number FPS() noexcept;
     static bool IsWebsocketActive() noexcept;
+    static std::optional<uint16_t> GetWebsocketPort() noexcept;
     static lua_Number WebsocketClients() noexcept;
     static bool WebsocketSend(std::string source, std::string content) noexcept;
 

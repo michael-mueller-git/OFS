@@ -376,6 +376,16 @@ bool OFS_WebsocketApi::IsServerRunning() noexcept
 	return CTX->web != nullptr;
 }
 
+std::optional<uint16_t> OFS_WebsocketApi::GetPort() noexcept {
+	if (not IsServerRunning()) {
+		return std::nullopt;
+	}
+	
+	mg_server_port ports;
+	mg_get_server_ports(CTX->web, 1, &ports);
+	return ports.port;
+}
+
 void OFS_WebsocketApi::Update() noexcept
 {
 	if(ClientsConnected() <= 0) return;

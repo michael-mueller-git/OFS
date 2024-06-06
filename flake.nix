@@ -1,13 +1,15 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixgl.url = "github:nix-community/nixGL";
   };
 
-  outputs = { self, nixpkgs, ... }:
+  outputs = { self, nixpkgs, nixgl, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         system = "${system}";
+        overlays = [ nixgl.overlay ];
       };
       ofsDependencies = with pkgs; [
         mesa
@@ -33,9 +35,18 @@
       ];
       libPath = pkgs.lib.makeLibraryPath ofsDependencies;
       binPath = pkgs.lib.makeBinPath ofsDependencies;
-    in
-    {
-      packages.${system}.ofs = pkgs.stdenv.mkDerivation {
+      nixGLWrap = pkg: pkgs.runCommand "${pkg.name}-nixgl-wrapper" {} ''
+        mkdir $out
+        ln -s ${pkg}/* $out
+        rm $out/bin
+        mkdir $out/bin
+        for bin in ${pkg}/bin/*; do
+          wrapped_bin=$out/bin/$(basename $bin)
+          echo "${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL $bin $@" > $wrapped_bin
+          chmod +x $wrapped_bin
+        done
+      '';
+      ofs = pkgs.stdenv.mkDerivation {
         pname = "OpenFunscripter";
         version = "4.0.1";
         src = pkgs.fetchgit {
@@ -55,6 +66,9 @@
           cp -rfv "$src/data" "$out/bin/"
         '';
       };
+    in
+    {
+      packages.${system}.ofs = nixGLWrap ofs;
       defaultPackage.${system} = self.packages.${system}.ofs;
       formatter.${system} = pkgs.nixpkgs-fmt;
       devShells.${system}.default = pkgs.mkShell {

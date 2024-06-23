@@ -4,7 +4,11 @@ json = require "json"
 processHandleFunscriptCopilot = nil
 status = "Copilot not running"
 updateCounter = 0
-
+methodIdx = 1
+methodNames = {
+    "auto-tracker",
+    "dense-optical-flow"
+}
 
 function get_platform()
     if ofs.ExtensionDir():find("^/home/") ~= nil then
@@ -61,6 +65,8 @@ function binding.start_funscript_copilot()
     table.insert(args, video)
     table.insert(args, "--port")
     table.insert(args, player.GetWebsocketPort())
+    table.insert(args, methodNames[methodIdx])
+        
 
     print("cmd: ", cmd)
     print("args: ", table.unpack(args))
@@ -100,6 +106,8 @@ function gui()
 
         ofs.SameLine()
         if not processHandleFunscriptCopilot then
+            methodIdx, _ = ofs.Combo("", methodIdx, methodNames)
+            ofs.SameLine()
             if ofs.Button("Start Copilot") then
                 binding.start_funscript_copilot()
             end

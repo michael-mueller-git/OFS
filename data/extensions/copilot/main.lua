@@ -6,7 +6,7 @@ status = "Copilot not running"
 updateCounter = 0
 methodIdx = 1
 methodNames = {
-    "auto-tracker",
+    "cock-tracker",
     "dense-optical-flow"
 }
 

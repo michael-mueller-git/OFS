@@ -3,6 +3,7 @@ json = require "json"
 -- global var
 processHandleFunscriptCopilot = nil
 status = "Copilot not running"
+extraArgs = ""
 updateCounter = 0
 methodIdx = 1
 methodNames = {
@@ -66,7 +67,10 @@ function binding.start_funscript_copilot()
     table.insert(args, "--port")
     table.insert(args, player.GetWebsocketPort())
     table.insert(args, methodNames[methodIdx])
-        
+
+    for word in string.gmatch(extraArgs, "%S+") do
+        table.insert(args, word)
+    end
 
     print("cmd: ", cmd)
     print("args: ", table.unpack(args))
@@ -107,7 +111,7 @@ function gui()
         ofs.SameLine()
         if not processHandleFunscriptCopilot then
             methodIdx, _ = ofs.Combo("", methodIdx, methodNames)
-            ofs.SameLine()
+            extraArgs, _ = ofs.Input("ExtraArgs", extraArgs)
             if ofs.Button("Start Copilot") then
                 binding.start_funscript_copilot()
             end

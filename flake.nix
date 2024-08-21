@@ -32,7 +32,6 @@
         gnome.zenity
         which
         git
-        ffmpeg_5-full
       ];
       libPath = pkgs.lib.makeLibraryPath ofsDependencies;
       binPath = pkgs.lib.makeBinPath ofsDependencies;

@@ -36,17 +36,6 @@
       ];
       libPath = pkgs.lib.makeLibraryPath ofsDependencies;
       binPath = pkgs.lib.makeBinPath ofsDependencies;
-      nixGLWrap = pkg: pkgs.runCommand "${pkg.name}-nixgl-wrapper" {} ''
-        mkdir $out
-        ln -s ${pkg}/* $out
-        rm $out/bin
-        mkdir $out/bin
-        for bin in ${pkg}/bin/*; do
-          wrapped_bin=$out/bin/$(basename $bin)
-          echo -e "#!/usr/bin/env bash\n${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL $bin $@" > $wrapped_bin
-          chmod +x $wrapped_bin
-        done
-      '';
       ofs = pkgs.stdenv.mkDerivation {
         pname = "OpenFunscripter";
         version = "4.0.1";
@@ -69,7 +58,7 @@
       };
     in
     {
-      packages.${system}.ofs = nixGLWrap ofs;
+      packages.${system}.ofs = ofs;
       defaultPackage.${system} = self.packages.${system}.ofs;
       formatter.${system} = pkgs.nixpkgs-fmt;
       devShells.${system}.default = pkgs.mkShell {

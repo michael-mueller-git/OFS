@@ -32,6 +32,7 @@
         gnome.zenity
         which
         git
+        ffmpeg_5-full
       ];
       libPath = pkgs.lib.makeLibraryPath ofsDependencies;
       binPath = pkgs.lib.makeBinPath ofsDependencies;
@@ -42,7 +43,7 @@
         mkdir $out/bin
         for bin in ${pkg}/bin/*; do
           wrapped_bin=$out/bin/$(basename $bin)
-          echo "${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL $bin $@" > $wrapped_bin
+          echo -e "#!/usr/bin/env bash\n${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL $bin $@" > $wrapped_bin
           chmod +x $wrapped_bin
         done
       '';

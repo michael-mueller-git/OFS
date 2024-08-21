@@ -7,3 +7,9 @@ Fork of [OpenFunscripter](https://github.com/OpenFunscripter/OFS) with some addi
 ```sh
 nix run github:michael-mueller-git/OFS --refresh --impure
 ```
+
+if you encounter the error message `ERROR: Failed to load glad`. when running the program, try the following:
+
+```sh
+nix run --impure github:guibou/nixGL -- nix run github:michael-mueller-git/OFS --refresh --impure
+```
